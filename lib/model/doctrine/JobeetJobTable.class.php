@@ -16,4 +16,28 @@ class JobeetJobTable extends Doctrine_Table
     {
         return Doctrine_Core::getTable('JobeetJob');
     }
+
+    /**
+     * Получение списка активных вакансий
+     */
+    public function getActiveJobs(Doctrine_Query $query = null)
+    {
+        if ( is_null($query) ) {
+            $query = Doctrine_Query::create()
+                ->from('JobeetJob j');
+        }
+
+        $query->addWhere('j.expires_at > ?', date('Y-m-d H:i:s', time() - 86400 * sfConfig::get('app_active_days')))
+            ->addOrderBy('j.expires_at DESC');
+
+        return $query->execute();
+    }
+
+    public function retrieveActiveJob(Doctrine_Query $query)
+    {
+        $query->addWhere('a.expires_at > ?', date('Y-m-d H:i:s', time() -86400 * sfConfig::get('app_active_days')));
+
+        return $query->fetchOne();
+    }
+
 }

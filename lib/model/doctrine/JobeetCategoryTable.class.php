@@ -16,4 +16,16 @@ class JobeetCategoryTable extends Doctrine_Table
     {
         return Doctrine_Core::getTable('JobeetCategory');
     }
+
+    /**
+     * Получение списка категорий с хотя бы одной вакансией 
+     */
+    public function getWithJobs()
+    {
+        $query = $this->createQuery('c')
+            ->leftJoin('c.JobeetCategory j')
+            ->where('j.expires_at > ?', date('Y-m-d H:i:s', time() - 86400 * sfConfig::get('app_active_days')));
+
+        return $query->execute();
+    }
 }
