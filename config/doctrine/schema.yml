@@ -1,6 +1,9 @@
 # database config
 JobeetCategory:
-    actAs: { Timestampable: ~ }
+    actAs:  
+        Timestampable: ~ 
+        Sluggable:
+         fields: [name]
     columns:
         name: { type: string(255), notnull: true, unique: true }
 

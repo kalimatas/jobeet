@@ -40,4 +40,24 @@ class JobeetJobTable extends Doctrine_Table
         return $query->fetchOne();
     }
 
+    public function countActiveJobs(Doctrine_Query $query = null)
+    {
+        return $this->addActiveJobsQuery($query)->count();
+    }
+
+    public function addActiveJobsQuery(Doctrine_Query $query = null)
+    {
+        if ( is_null($query) ) {
+            $q = Doctrine_Query::create()
+                ->from('JobeetJob j');
+        }
+
+        $alias = $query->getRootAlias();
+
+        $query->addWhere($alias . '.expires_at > ?', date('Y-m-d H:i:s', time() - 86400 * sfConfig::get('app_active_days')))
+            ->addOrderBy($alias . '.expires_at DESC');
+
+        return $query;
+    }
+
 }
