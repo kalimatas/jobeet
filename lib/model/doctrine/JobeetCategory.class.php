@@ -14,25 +14,40 @@ class JobeetCategory extends BaseJobeetCategory
 {
     public function getActiveJobs($max = 10)
     {
-        $query = Doctrine_Query::create()
-            ->from('JobeetJob j')
-            ->where('j.category_id = ?', $this->getId())
+        //$query = Doctrine_Query::create()
+            //->from('JobeetJob j')
+            //->where('j.category_id = ?', $this->getId())
+            //->limit($max);
+        $query = $this->getActiveJobsQuery()
             ->limit($max);
 
-        return Doctrine_Core::getTable('JobeetJob')->getActiveJobs($query);
+        return $query->execute();
+
+        //return Doctrine_Core::getTable('JobeetJob')->getActiveJobs($query);
     }
 
-    public function countActiveJobs()
+    public function getActiveJobsQuery()
     {
         $query = Doctrine_Query::create()
             ->from('JobeetJob j')
             ->where('j.category_id = ?', $this->getId());
 
-        return Doctrine_Core::getTable('JobeetJob')->countActiveJobs($query);
+        return Doctrine_Core::getTable('JobeetJob')->addActiveJobsQuery($query);
     }
 
-    public function getSlug()
+    public function countActiveJobs()
     {
-        return Jobeet::slugify($this->getName());
+        //$query = Doctrine_Query::create()
+            //->from('JobeetJob j')
+            //->where('j.category_id = ?', $this->getId());
+
+        //return Doctrine_Core::getTable('JobeetJob')->countActiveJobs($query);
+
+        return $this->getActiveJobsQuery()->count();
     }
+
+    //public function getSlug()
+    //{
+        //return Jobeet::slugify($this->getName());
+    //}
 }

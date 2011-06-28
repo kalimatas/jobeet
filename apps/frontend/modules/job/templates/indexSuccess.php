@@ -11,7 +11,7 @@
             <?php include_partial('job/list', array('jobs' => $category->getActiveJobs())) ?>
 
             <?php
-            if ( ($count = $category->countActiveJobs() - sfConfig::get('max_jobs')) > 0 ) : 
+            if ( ($count = $category->countActiveJobs() - sfConfig::get('app_max_jobs')) > 0 ) : 
             ?>
             <div class="more_jobs"> and <?php echo link_to($count, 'category', $category); ?> more...</div>
             <?php endif; ?>

@@ -2,7 +2,7 @@ JobeetJob:
 
 <?php 
 $cats = array('programming', 'design');
-for ($i = 100; $i <= 130; $i++): ?>
+for ($i = 50; $i <= 130; $i++): ?>
     job_<?php echo $i; ?>:
         JobeetCategory: <?php echo $cats[array_rand($cats)] . "\n"; ?>
         type: full-time
