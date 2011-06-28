@@ -8,17 +8,8 @@
                 <h1><?php echo link_to($category, 'category', $category); ?></h1>
             </div>
 
-            <table class="jobs">
-                <?php foreach ($category->getActiveJobs(sfConfig::get('app_max_jobs')) as $i => $job) : ?>
-                    <tr class="<?php echo fmod($i, 2) ? 'even' : 'odd' ?>">
-                        <td><?php echo $job->getLocation(); ?></td>
-                        <td>
-                            <?php echo link_to($job->getPosition(), 'job_show_user', $job); ?>
-                        </td>
-                        <td><?php echo $job->getCompany() ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
+            <?php include_partial('job/list', array('jobs' => $category->getActiveJobs())) ?>
+
             <?php
             if ( ($count = $category->countActiveJobs() - sfConfig::get('max_jobs')) > 0 ) : 
             ?>

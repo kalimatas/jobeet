@@ -29,6 +29,7 @@ category:
     url: /category/:slug
     class: sfDoctrineRoute
     options: { model: JobeetCategory, type: object }
+    param: { module: category, action: show }
 
 # default rules
 homepage:

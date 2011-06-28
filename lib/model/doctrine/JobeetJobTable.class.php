@@ -48,7 +48,7 @@ class JobeetJobTable extends Doctrine_Table
     public function addActiveJobsQuery(Doctrine_Query $query = null)
     {
         if ( is_null($query) ) {
-            $q = Doctrine_Query::create()
+            $query = Doctrine_Query::create()
                 ->from('JobeetJob j');
         }
 
