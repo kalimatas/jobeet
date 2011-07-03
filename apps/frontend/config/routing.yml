@@ -13,11 +13,16 @@
 # collection
 job:
     class: sfDoctrineRouteCollection
-    options: { model: JobeetJob }
+    options: 
+        model: JobeetJob
+        column: token 
+        object_actions: { publish: put }
+    requirements: 
+        token: \w+ 
 
 # sfDoctrineRoute
 job_show_user:
-    url: /job/:company_slug/:location_slug/:id/:position_slug
+    url: /job/:company_slug/:location_slug/:token/:position_slug/
     class: sfDoctrineRoute
     options: { model: JobeetJob, type: object, method_for_query: retrieveActiveJob }
     param: { module: job, action: show }

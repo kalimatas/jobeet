@@ -26,6 +26,8 @@ class JobeetCategoryTable extends Doctrine_Table
             ->leftJoin('c.JobeetCategory j')
             ->where('j.expires_at > ?', date('Y-m-d H:i:s', time() - 86400 * sfConfig::get('app_active_days')));
 
+        $query->addWhere('j.is_activated = ?', 1);
+
         return $query->execute();
     }
 }

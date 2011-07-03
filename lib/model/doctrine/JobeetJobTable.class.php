@@ -7,6 +7,17 @@
  */
 class JobeetJobTable extends Doctrine_Table
 {
+    static public $types = array(
+        'full-time' => 'Full time',
+        'part-time' => 'Part time',
+        'freelance' => 'Freelance'
+    );
+
+    public function getTypes()
+    {
+        return self::$types;
+    }
+
     /**
      * Returns an instance of this class.
      *
@@ -55,6 +66,7 @@ class JobeetJobTable extends Doctrine_Table
         $alias = $query->getRootAlias();
 
         $query->addWhere($alias . '.expires_at > ?', date('Y-m-d H:i:s', time() - 86400 * sfConfig::get('app_active_days')))
+            ->addWhere($alias . '.is_activated = ?', 1)
             ->addOrderBy($alias . '.expires_at DESC');
 
         return $query;
