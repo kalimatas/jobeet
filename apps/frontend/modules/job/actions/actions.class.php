@@ -44,7 +44,9 @@ class jobActions extends sfActions
 
   public function executeEdit(sfWebRequest $request)
   {
-    //$this->forward404Unless($jobeet_job = Doctrine_Core::getTable('JobeetJob')->find(array($request->getParameter('id'))), sprintf('Object jobeet_job does not exist (%s).', $request->getParameter('id')));
+    $job = $this->getRoute()->getObject();
+    $this->forward404If($job->getIsActivated());
+
     $this->form = new JobeetJobForm($this->getRoute()->getObject());
   }
 

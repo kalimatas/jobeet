@@ -73,4 +73,27 @@ $browser->info('2 - The job page')->
     //info('  2.3 - An expired job page forwards the user to a 404')->
     //get(sprintf('/job/sensio-labs/paris-france/%d/web-developer', $browser->getExpiredJob()->getId()))->
     //with('response')->isStatusCode(404)
+//
+
+// form
+$browser->
+    info(' 3.2 - Submit a Job with invalid values')->
+
+    get('job/new')->
+    click('Preview your job', array('job' => array(
+        'company' => 'Sensio Labs',
+        'position' => 'Developer',
+        'location' => 'Location',
+        'email' => 'not.an.email'
+    )))->
+
+    with('form')->begin()->
+        hasErrors(3)->
+        isError('description', 'required')->
+        isError('how_to_apply', 'required')->
+        isError('email', 'invalid')->
+    end()
+;
+
+?>
 

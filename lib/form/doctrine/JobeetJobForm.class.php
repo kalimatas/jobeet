@@ -55,5 +55,8 @@ class JobeetJobForm extends BaseJobeetJobForm
       $this->widgetSchema->setHelp(
           'is_public', 'Where the job can also be published.'
       );
+
+      // format
+      $this->widgetSchema->setNameFormat('job[%s]');
   }
 }
