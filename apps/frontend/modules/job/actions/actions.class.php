@@ -23,6 +23,9 @@ class jobActions extends sfActions
   public function executeShow(sfWebRequest $request)
   {
     $this->job = $this->getRoute()->getObject();
+
+    $this->getUser()->addJobToHistory($this->job);
+
     //$this->job = Doctrine_Core::getTable('JobeetJob')->find(array($request->getParameter('id')));
     //$this->forward404Unless($this->job);
   }

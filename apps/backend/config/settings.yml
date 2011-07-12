@@ -26,6 +26,7 @@ all:
   .settings:
     # Form security secret (CSRF protection)
     csrf_secret:            ec95ded856fd68e66fb952bd023c67cc45cd2415
+    enabled_modules: [default, sfGuardAuth, sfGuardUser]
 
     # Output escaping settings
     escaping_strategy:      true
@@ -33,3 +34,7 @@ all:
 
     # Enable the database manager
     use_database:           true
+
+  .actions:
+    login_module: sfGuardAuth
+    login_action: signin
