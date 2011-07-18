@@ -31,10 +31,12 @@ job_show_user:
         sf_method: [get]
 
 category:
-    url: /category/:slug
+    url: /category/:slug.:sf_format
     class: sfDoctrineRoute
     options: { model: JobeetCategory, type: object }
-    param: { module: category, action: show }
+    param: { module: category, action: show, sf_format: html }
+    requirements:
+        sf_format: (?:html|atom)
 
 # default rules
 homepage:
