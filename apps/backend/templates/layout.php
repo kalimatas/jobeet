@@ -19,6 +19,8 @@
                 <li><?php echo link_to('Jobs', 'jobeet_job') ?></li>
                 <li><?php echo link_to('Categories', 'jobeet_category') ?></li>
                 <li><?php echo link_to('Users', 'sf_guard_user') ?></li>
+                <li><a href="<?php echo url_for('jobeet_affiliate') ?>">
+                    Affiliates - <strong><?php echo Doctrine_Core::getTable('JobeetAffiliate')->countToBeActivated() ?></strong></a></li>
                 <li><?php echo link_to('Logout', 'sf_guard_signout') ?></li>
             </ul>
         </div>

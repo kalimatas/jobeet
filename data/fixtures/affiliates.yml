@@ -1,0 +1,14 @@
+JobeetAffiliate:
+    sensio_labs:
+        url: http://www.sensio-labs.com/
+        email: kalimatas@gmail.com
+        is_active: true
+        token: sensio_labs
+        JobeetCategories: [programming]
+
+    symfony:
+        url: http://www.symfony-project.org/
+        email: somemail@mail.com
+        is_active: false
+        token: symfony
+        JobeetCategories: [design, programming]

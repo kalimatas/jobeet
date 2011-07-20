@@ -38,6 +38,22 @@ category:
     requirements:
         sf_format: (?:html|atom)
 
+affiliate:
+    class: sfDoctrineRouteCollection 
+    options:
+        model: JobeetAffiliate
+        actions: [new, create]
+        object_actions: { wait: get }
+
+# affiliates
+api_jobs:
+    url: /api/:token/jobs.:sf_format
+    class: sfDoctrineRoute
+    param: { module: api, action: list }
+    options: { model: JobeetJob, type: list, method: getForToken }
+    requirements:
+        sf_format: (?:xml|json|yaml)
+
 # default rules
 homepage:
   url:   /
