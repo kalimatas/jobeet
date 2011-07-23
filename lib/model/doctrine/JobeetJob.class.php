@@ -26,7 +26,53 @@ class JobeetJob extends BaseJobeetJob
             $this->setToken(sha1($this->getEmail().rand(11111, 99999)));
         }
 
-        return parent::save($conn);
+        //$conn = $conn ? $conn : JobeetJobTable::getConnection();
+        //$conn->beginTransaction();
+
+        //try {
+            $ret = parent::save($conn);
+
+            // обновляем поисковой индекс
+            $this->updateLuceneIndex();
+
+            return $ret;
+
+        //} catch (Exception $e) {
+            //$conn->rollBack();
+            //throw $e;
+        //}
+
+    }
+
+    public function updateLuceneIndex()
+    {
+        $index = JobeetJobTable::getLuceneIndex();
+        //die(PHP_EOL."end".PHP_EOL);
+
+        // удалить существующие записи
+        foreach ( $index->find('pk:'.$this->getId()) as $hit ) {
+            $index->delete($hit->id);
+        }
+
+        // не индексировать истекшие и не активированные
+        if ( $this->isExpired() || !$this->getIsActivated() ) {
+            return;
+        }
+
+        $doc = new Zend_Search_Lucene_Document();
+
+        // сохраняем первичный ключ вакансии
+        $doc->addField(Zend_Search_Lucene_Field::Keyword('pk', $this->getId()));
+
+        // индексируем поля вакансии
+        $doc->addField(Zend_Search_Lucene_Field::UnStored('position', $this->getPosition(), 'utf-8'));
+        $doc->addField(Zend_Search_Lucene_Field::UnStored('company', $this->getCompany(), 'utf-8'));
+        $doc->addField(Zend_Search_Lucene_Field::UnStored('location', $this->getLocation(), 'utf-8'));
+        $doc->addField(Zend_Search_Lucene_Field::UnStored('description', $this->getDescription(), 'utf-8'));
+
+        // добавляем работу в индекс
+        $index->addDocument($doc);
+        $index->commit();
     }
 
     public function getCompanySlug()
@@ -95,5 +141,19 @@ class JobeetJob extends BaseJobeetJob
             'how_to_apply' => $this->getHowToApply(),
             'expires_at' => $this->getCreatedAt(),
         );
+    }
+
+    /**
+     * Удаление вакансии 
+     */
+    public function delete(Doctrine_Connection $conn = null)
+    {
+        $index = JobeetJobTable::getLuceneIndex();
+
+        foreach ( $index->find('pk:'.$this->getId()) as $hit ) {
+            $index->delete($hit->id);
+        }
+
+        return parent::delete($conn);
     }
 }

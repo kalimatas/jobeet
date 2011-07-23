@@ -93,4 +93,11 @@ class jobActions extends sfActions
         $this->getUser()->setFlash('notice', sprintf('Your job is now online for %s days.', sfConfig::get('app_active_days')));
         $this->redirect('job_show_user', $job);
     }
+
+    public function executeSearch(sfWebRequest $request) 
+    {
+        $this->forwardUnLess($query = $request->getParameter('query'), 'job', 'index');    
+
+        $this->jobs = Doctrine_Core::getTable('JobeetJob')->getForLuceneQuery($query);
+    }
 }
