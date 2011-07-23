@@ -54,6 +54,11 @@ api_jobs:
     requirements:
         sf_format: (?:xml|json|yaml)
 
+# search
+job_search:
+    url: /search
+    param: { module: job, action: search }
+
 # default rules
 homepage:
   url:   /
