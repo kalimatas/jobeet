@@ -1,4 +1,5 @@
 /cache
 /log
+data/*.index/*
 *.vim
 tags
